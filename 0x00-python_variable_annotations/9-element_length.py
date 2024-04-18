@@ -9,4 +9,7 @@ from typing import Tuple, List, Iterable, Sequence
 
 
 def element_length(lst: Iterable[Sequence]) -> List[Tuple[Sequence, int]]:
+    """
+    function element_length: return a list of tubles with a sequance and int values
+    """
     return [(i, len(i)) for i in lst]
