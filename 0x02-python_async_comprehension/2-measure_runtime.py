@@ -16,7 +16,7 @@ import asyncio
 async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
-async def measure_runtime() -> List[float]:
+async def measure_runtime() -> float:
     """
     generates a random float numbers list and waits for a second.
 
@@ -29,11 +29,6 @@ async def measure_runtime() -> List[float]:
 
     start_time = time()
 
-    await asyncio.gather(
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension(),
-        async_comprehension()
-        )
-
+    tasks = [async_comprehension() for _ in range(4)]
+    await asyncio.gather(*tasks)
     return time() - start_time
