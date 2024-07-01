@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
 """
-0. Parameterize a unit test
-1. Parameterize a unit test
+Test for access_nested_map function
 """
 import unittest
-
-from requests import patch
+import requests
+from unittest.mock import patch
 from utils import access_nested_map, get_json, memoize
-from typing import Mapping, Any, Sequence
+from typing import Mapping, Sequence, Any
 from parameterized import parameterized
 
 
-class TestAccessNestedMap (unittest.TestCase):
+class TestAccessNestedMap(unittest.TestCase):
     """
-    test class for the access_nested_map method
+    Tests the access_nested_map function
     """
-
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -24,16 +22,13 @@ class TestAccessNestedMap (unittest.TestCase):
     def test_access_nested_map(self, nested_map: Mapping,
                                path: Sequence, expected: int) -> None:
         """
-        Test method to verify that the method returns the expected result.
+        Test the access_nested_map method.
 
         Args:
-            nested_map (Mapping): A nested mapping object.
-            path (Sequence): A sequence representing the path to access a value
-            in the nested map.
-            expected (int): The expected value to be returned by the method.
-
-        Returns:
-            None
+            nested_map (Dict): A dictionary that may have nested dictionaries.
+            path (List, tuple, set): Keys to get to the required value in the
+                                     nested dictionary.
+            expected (int): The expected value to be retrieved from the nested map.
         """
         response = access_nested_map(nested_map, path)
         self.assertEqual(response, expected)
@@ -45,11 +40,12 @@ class TestAccessNestedMap (unittest.TestCase):
     def test_access_nested_map_exception(self, nested_map: Mapping,
                                          path: Sequence) -> None:
         """
-        Test the access_nested_map method raises an error when expected to
+        Test the access_nested_map method raises an error when expected to.
+
         Args:
-            nested_map (Dict): A dictionary that may have nested dictionaries
+            nested_map (Dict): A dictionary that may have nested dictionaries.
             path (List, tuple, set): Keys to get to the required value in the
-                                     nested dictionary
+                                     nested dictionary.
         """
         with self.assertRaises(Exception):
             access_nested_map(nested_map, path)
@@ -57,7 +53,7 @@ class TestAccessNestedMap (unittest.TestCase):
 
 class TestGetJson(unittest.TestCase):
     """
-    Testing the get_json function
+    Test the get_json function
     """
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
@@ -69,11 +65,9 @@ class TestGetJson(unittest.TestCase):
         Test the get_json method to ensure it returns the expected output.
 
         Args:
-            test_url (str): The URL to send the HTTP request to.
-            test_payload (dict): The expected JSON response.
-
-        Returns:
-            None
+            test_url (str): URL to send HTTP request to.
+            test_payload (dict): Expected JSON response.
+            mock_requests_get: Mock object for requests.get.
         """
         mock_requests_get.return_value.json.return_value = test_payload
         result = get_json(test_url)
@@ -87,7 +81,7 @@ class TestMemoize(unittest.TestCase):
     """
     def test_memoize(self):
         """
-        Test that utils.memoize decorator works as intended
+        Test that utils.memoize decorator works as intended.
         """
         class TestClass:
 
